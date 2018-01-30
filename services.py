@@ -13,6 +13,7 @@ URL_SERVICE = "/services/"
 USERNAME = "userid"
 PASSWORD = "password"
 kwargs = {}
+TIMEOUT = 60
 
 # HTTP
 def get(url):
@@ -138,7 +139,7 @@ def restart_service(service_id):
                         "timeout": "How many seconds to wait until an upgrade fails"
                        })
 def upgrade(service_id, start_first=True, complete_previous=False, imageUuid=None, auto_complete=False,
-            batch_size=1, interval_millis=10000, replace_env_name=None, replace_env_value=None, timeout=60):
+            batch_size=1, interval_millis=10000, replace_env_name=None, replace_env_value=None, timeout=TIMEOUT):
    """Upgrades a service
 
    Performs a service upgrade, keeping the same configuration, but otherwise
@@ -288,7 +289,7 @@ def execute(service_id,command):
                         "service_id": "The ID of the service to rollback.",
                         "timeout": "How many seconds to wait until an rollback fails"
                        })
-def rollback(service_id, timeout=60):
+def rollback(service_id, timeout=TIMEOUT):
    """Performs a service rollback
    """
 
@@ -331,7 +332,7 @@ def rollback(service_id, timeout=60):
 #
 @baker.command(params={"service_id": "The ID of the service to deactivate.",
                         "timeout": "How many seconds to wait until an upgrade fails"})
-def activate (service_id, timeout=60):
+def activate (service_id, timeout=TIMEOUT):
    """Activate the containers of a given service.
    """
 
@@ -360,7 +361,7 @@ def activate (service_id, timeout=60):
 #
 @baker.command(params={"service_id": "The ID of the service to deactivate.",
                         "timeout": "How many seconds to wait until an upgrade fails"})
-def deactivate (service_id, timeout=60):
+def deactivate (service_id, timeout=TIMEOUT):
    """Stops the containers of a given service. (e.g. for maintenance purposes)
    """
 
@@ -429,6 +430,9 @@ if __name__ == '__main__':
         kwargs['verify'] = False
       else:
         kwargs['verify'] = os.environ['SSL_VERIFY']
+
+   if 'TIMEOUT' in os.environ:
+       TIMEOUT = os.environ['TIMEOUT']
 
    # make sure host ends with v1 if it is not contained in host
    if '/v1' not in HOST:
