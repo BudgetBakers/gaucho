@@ -16,7 +16,7 @@ PASSWORD = "password"
 kwargs = {}
 TIMEOUT = 600
 if 'TIMEOUT' in os.environ:
-    TIMEOUT = os.environ['TIMEOUT']
+    TIMEOUT = int(os.environ['TIMEOUT'])
 
 
 # HTTP
